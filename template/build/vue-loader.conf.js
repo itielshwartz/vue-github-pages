@@ -1,13 +1,9 @@
 var utils = require('./utils')
 var config = require('../config')
-var isProduction = process.env.NODE_ENV === 'production'
-
+var envToSourceMap = {"deploy": config.deploy.productionSourceMap, "production": config.build.productionSourceMap}
 module.exports = {
   loaders: utils.cssLoaders({
-    sourceMap: isProduction
-      ? config.build.productionSourceMap
-      : config.dev.cssSourceMap,
-    extract: isProduction
+    sourceMap: envToSourceMap[process.env.NODE_ENV] || config.dev.cssSourceMap,
   }),
   transformToRequire: {
     video: 'src',
